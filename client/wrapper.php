@@ -22,7 +22,7 @@ $start = date("Y-m-d G:i:s");
 
 if($connected)
 {
-	$sql = "INSERT INTO logs (job_id,starttime) VALUES (':job_id',':starttime')";
+	$sql = "INSERT INTO logs (job_id,start_time) VALUES (':job_id',':starttime')";
 	$sth = $dbh->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
 	$sth->execute(array(':job_id' => $jobid, ':starttime' => $start));
 }
@@ -37,9 +37,9 @@ $end = date("Y-m-d G:i:s");
 $success = ($ret ===0);
 if($connected)
 {
-	$sql = "UPDATE logs SET endtime=:endtime,output=:output,success:success WHERE job_id=job_id";
+	$sql = "UPDATE logs SET end_time=:endtime,output=:output,success:success WHERE job_id=job_id";
 	$sth = $dbh->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-	$sth->execute(array(':job_id' => $jobid, ':endtime' => $end,'output'=>implode("\n",$output),'success'=> $success));
+	$sth->execute(array(':job_id' => $jobid, ':endtime' => $end,'output'=>implode("\n",$output),'succeeded'=> $success));
 }
 
 ?>

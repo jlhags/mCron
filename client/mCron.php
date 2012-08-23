@@ -43,10 +43,14 @@ else
 
 $SQL = "SELECT * FROM jobs WHERE server_id = $id";
 
-
+$crontab = '# This file was auto generated using mCron. DO NOT MODIFY THIS FILE. YOUR CHANGES WILL BE REMOVED\n\n';
+$crontab .= '# Run the mCron client to check for update\n'
+$crontab .= "*/5	*	*	*	*	" . dirname(__FILE__) . $argv[0]."\n";
+$wrapper = dirname(__FILE__) . "wrapper.php" 
 foreach($sth->query($sql) as $job)
 {
-	#add job to cron.
+	$crontab =. '# ' . $job['decription'] . "\n";
+	$crontab .= printf("%s	%s	%s	%s	%s	%s %s %s", $job['min'],$job['hour'],$job['min'],$job['dom'],$job['dow'],$wrapper,$job['id'],$job['command']
 }
 
 ?>

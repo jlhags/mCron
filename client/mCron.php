@@ -41,16 +41,22 @@ else
 }
 
 
-$SQL = "SELECT * FROM jobs WHERE server_id = $id";
+$SQL = "SELECT * FROM jobs WHERE server_id = $id AND processed = false";
 
 $crontab = '# This file was auto generated using mCron. DO NOT MODIFY THIS FILE. YOUR CHANGES WILL BE REMOVED\n\n';
-$crontab .= '# Run the mCron client to check for update\n'
+$crontab .= '# Run the mCron client to check for update\n';
 $crontab .= "*/5	*	*	*	*	" . dirname(__FILE__) . $argv[0]."\n";
-$wrapper = dirname(__FILE__) . "wrapper.php" 
+$wrapper = dirname(__FILE__) . "wrapper.php" ;
+$updated = false; 
 foreach($sth->query($sql) as $job)
 {
-	$crontab =. '# ' . $job['decription'] . "\n";
-	$crontab .= printf("%s	%s	%s	%s	%s	%s %s %s", $job['min'],$job['hour'],$job['min'],$job['dom'],$job['dow'],$wrapper,$job['id'],$job['command']
+	$updated = true;
+	$crontab .= '# ' . $job['decription'] . "\n";
+	$crontab .= sprintf("%s	%s	%s	%s	%s	%s %s %s", $job['min'],$job['hour'],$job['min'],$job['dom'],$job['dow'],$wrapper,$job['id'],$job['command']);
+}
+if($updated)
+{
+	#write to crontab
 }
 
 ?>
